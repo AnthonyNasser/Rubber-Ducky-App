@@ -1,10 +1,18 @@
-import Navbar from './components/Navbar'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import HomeScreen from './screens/HomeScreen'
+import ChatScreen from './screens/ChatScreen'
+import QuizScreen from './screens/QuizScreen'
 
 const App = () => {
     return (
-        <div className="bg-slate-100">
-            <Navbar />
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<HomeScreen />} />
+                <Route path="/chats" element={<ChatScreen />} />
+                <Route path="/quiz" element={<QuizScreen />} />
+            </Routes>
+        </BrowserRouter>
     )
 }
 
