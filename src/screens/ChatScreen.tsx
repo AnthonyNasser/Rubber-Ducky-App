@@ -1,16 +1,20 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Navbar from '../components/Navbar'
+import { BG_STYLE } from '../theme/tailwind-styles'
+import { faAdd, faUser } from '@fortawesome/free-solid-svg-icons'
+import ChatBox from '../components/Chatbox'
 
 function ChatScreen() {
     return (
-        <div>
+        <div className={`${BG_STYLE}`}>
             <Navbar />
-            <div className="flex flex-col items-center justify-center h-screen">
-                <div className="flex flex-col items-center justify-center w-1/2 h-1/2 bg-primary rounded-lg">
-                    <h1 className="text-2xl text-textColor">Chat</h1>
-                    <div className="flex flex-col items-center justify-center w-1/2 h-1/2 bg-secondary rounded-lg">
-                        <h1 className="text-2xl text-textColor">Chat</h1>
-                    </div>
-                </div>
+            <div className="flex flex-col h-screen">
+                <button className="bg-secondary-200 text-white font-bold py-5 px-4 rounded-2xl w-1/6 shadow-lg ml-5 mb-5 mt-10">
+                    <FontAwesomeIcon icon={faAdd} className="mr-3" size="lg" />
+                    <span className="text-lg uppercase">Create a Chat</span>
+                </button>
+                <ChatBox />
+                <ChatBox />
             </div>
         </div>
     )
