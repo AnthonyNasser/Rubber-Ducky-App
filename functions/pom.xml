@@ -38,11 +38,11 @@
         <version>0.10.1</version>
         <configuration>
           <!-- Chat targets -->
-          <functionTarget>functions.chat.AskQuestion</functionTarget>
-          <!-- <functionTarget>functions.RequestAdditionalInformation</functionTarget>
-          <functionTarget>functions.Respond</functionTarget>
+          <!-- <functionTarget>functions.AskQuestion</functionTarget>
+          <functionTarget>functions.chat.RequestAdditionalInformation</functionTarget> -->
+          <!-- <functionTarget>functions.chat.Respond</functionTarget> -->
 
-          <functionTarget>functions.LogInUser</functionTarget>
+          <!-- <functionTarget>functions.LogInUser</functionTarget>
           <functionTarget>functions.CreateUser</functionTarget>
           <functionTarget>functions.CreateChat</functionTarget>
           <functionTarget>functions.GetChats</functionTarget> -->
