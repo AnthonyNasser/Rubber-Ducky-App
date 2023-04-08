@@ -10,11 +10,19 @@ import {
 } from '../theme/tailwind-styles'
 
 const rubberDuckyTransparent = require('../assets/images/rubber-ducky-transparent.png')
+const quackSrc = require("../assets/sounds/quack.mp3")
+
+function quack() {
+    var quackSound = new Audio(quackSrc)
+    quackSound.volume = 0.5
+    quackSound.play()
+}
 
 function HomeScreen() {
     const BIG_CONTAINER_STYLE: string = `flex flex-col items-center justify-start px-10 ${FADE_IN_SHORT}`
     const PARAGRAPHS_CONTAINER_STYLE: string =
         'flex flex-col items-center justify-center w-auto h-5/6 shadow-xlg rounded-3xl bg-secondary-100 mt-10 shadow-md'
+    
     return (
         <div className={`${BG_STYLE}`}>
             <Navbar />
@@ -64,6 +72,7 @@ function HomeScreen() {
                             className="hidden lg:block w-1/6"
                             src={rubberDuckyTransparent}
                             alt="Rubber Ducky"
+                            onClick={quack}
                         />
                         <Link
                             className="hover:transform hover:-translate-y-1 hover:-skew-y-1 hover:bg-primary-500 hover:opacity-100 transition duration-300 ease-in-out rounded-2xl px-3 py-5 mt-6 mb-2 lg:my-0 flex items-center justify-center text-xs uppercase font-bold w-full lg:w-1/3 text-white bg-gradient-to-r bg-primary-300 shadow-lg"
