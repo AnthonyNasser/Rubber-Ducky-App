@@ -1,4 +1,4 @@
-import { JSXElementConstructor, ReactElement, ReactFragment, useState } from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactFragment, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Navbar from '../components/Navbar'
 import { BG_STYLE } from '../theme/tailwind-styles'
@@ -7,11 +7,29 @@ import ChatBox from '../components/Chatbox'
 import ChatInterface from '../components/ChatInterface'
 import ChatDialouge from '../components/ChatDialouge'
 
+type ModalState = {
+    showModal: boolean;
+    subject: string;
+  };
+
 function ChatScreen() {
     const [chatBoxCount, setChatBoxCount] = useState(2); // Initialize with 2 chatboxes
+    const [modalState, setModalState] = useState<ModalState>({
+        showModal: false,
+        subject: '',
+      }); 
+      
+    const { showModal, subject } = modalState;
+    const handleAddChatBox = (e: React.FormEvent) => {
+        e.preventDefault(); 
+        setChatBoxCount(chatBoxCount + 1); // Increment the count when the button is clicked
+      };
 
-    const handleAddChatBox = () => {
-      setChatBoxCount(chatBoxCount + 1); // Increment the count when the button is clicked
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Do something with the submitted data, e.g. send it to the server
+        // Then close the modal
+        setModalState({ ...modalState, showModal: false });
     };
   
     const chatBoxes = [];
@@ -26,7 +44,11 @@ function ChatScreen() {
                 <div className="flex flex-col h-full w-1/6" id="chatList">
                     <button 
                     className="bg-secondary-200 text-white font-bold py-5 px-4 rounded-2xl shadow-lg ml-5 mb-5 mt-10"
-                    onClick={handleAddChatBox} // Add an onClick handler to the button
+                    onClick={(e) => {
+                        handleAddChatBox(e);
+                        setModalState({ ...modalState, showModal: true });
+                      }} // Add an onClick handler to the button and also popup
+                    
                     >
                         <FontAwesomeIcon icon={faAdd} className="mr-3" size="lg" />
                         <span className="text-lg uppercase">Create a Chat</span>
@@ -41,8 +63,46 @@ function ChatScreen() {
 
                 </div>
             </div> 
+            {modalState.showModal && (
+                <div
+                style={{
+                    position: 'fixed',
+                    top: '0',
+                    bottom: '0',
+                    left: '0',
+                    right: '0',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    background: 'rgba(0, 0, 0, 0.5)',
+                    zIndex: 9999,
+                }}
+                >
+                <div
+                style={{
+                    width: '300px',
+                    height: '200px',
+                    background: 'white',
+                    borderRadius: '5px',
+                    padding: '20px',
+                    boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.2)',
+                }}
+                >
+            <form onSubmit = {handleSubmit}>
+              <label htmlFor="subjectInput">What do you want to teach today?:</label>
+              <input
+                type="text"
+                id="subjectInput"
+                name="subject"
+                value={modalState.subject}
+                onChange={(e) => setModalState({ ...modalState, subject: e.target.value })}
+              />
+              <button type="submit">Submit</button>
+            </form>
+          </div>
         </div>
-
+      )}
+    </div>
     );
 };
 
