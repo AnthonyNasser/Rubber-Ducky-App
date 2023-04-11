@@ -14,6 +14,7 @@ type ModalState = {
 
 function ChatScreen() {
     const [chatBoxCount, setChatBoxCount] = useState(2); // Initialize with 2 chatboxes
+    const [chatBoxes, setChatBoxes] = useState<Array<JSX.Element>>([]);
     const [modalState, setModalState] = useState<ModalState>({
         showModal: false,
         subject: '',
@@ -27,15 +28,20 @@ function ChatScreen() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const form = e.target as HTMLFormElement;
+        const input = form.elements.namedItem("subjectInput") as HTMLInputElement;
+        const chatInputTitle = input.value
         // Do something with the submitted data, e.g. send it to the server
         // Then close the modal
+
+        setChatBoxCount(chatBoxCount + 1);
+
+        const newChatBoxes = [...chatBoxes, <ChatBox chatTitle={chatInputTitle} />];
+        setChatBoxes(newChatBoxes);
+        
         setModalState({ ...modalState, showModal: false });
     };
-  
-    const chatBoxes = [];
-    for (let i = 0; i < chatBoxCount; i++) {
-      chatBoxes.push(<ChatBox chatTitle={"example" + i} />);
-    }
 
     return (
         <div className={`${BG_STYLE} flex flex-col min-h-screen`}>
