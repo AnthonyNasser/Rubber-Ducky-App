@@ -26,19 +26,23 @@ function ChatScreen() {
         setChatBoxCount(chatBoxCount + 1); // Increment the count when the button is clicked
       };
 
+    const handleDeleteClick = (index: number) => {
+      const newChatBoxes = [...chatBoxes];
+      newChatBoxes.splice(index, 1);
+      setChatBoxes(newChatBoxes);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
         const form = e.target as HTMLFormElement;
         const input = form.elements.namedItem("subjectInput") as HTMLInputElement;
         const chatInputTitle = input.value
         // Do something with the submitted data, e.g. send it to the server
         // Then close the modal
 
+        const nChatBoxes = [...chatBoxes, <ChatBox chatTitle={chatInputTitle} index={chatBoxCount} handleDeleteClick={handleDeleteClick} />];
+        setChatBoxes(nChatBoxes);
         setChatBoxCount(chatBoxCount + 1);
-
-        const newChatBoxes = [...chatBoxes, <ChatBox chatTitle={chatInputTitle} />];
-        setChatBoxes(newChatBoxes);
         
         setModalState({ ...modalState, showModal: false });
     };
@@ -71,7 +75,13 @@ function ChatScreen() {
                         <span className="text-lg uppercase">Create a Chat</span>
                     </button>
                     <div className="flex flex-col overflow-y-scroll max-h-screen">
-                        {chatBoxes}
+                      {chatBoxes.map((chatBox, index) => (
+                        <div key={index}>
+                          
+                          {chatBox}
+                          
+                        </div>
+                      ))}
                     </div>
                 </div>
                 <div className="flex flex-col flex-1 w-5/6 max-w-100 pl-10 pr-10">
