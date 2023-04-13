@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor, ReactElement, ReactFragment, useState } from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactFragment, useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Navbar from '../components/Navbar'
 import { BG_STYLE } from '../theme/tailwind-styles'
@@ -11,6 +11,7 @@ type ModalState = {
     showModal: boolean;
     subject: string;
   };
+
 
 function ChatScreen() {
     const [chatBoxCount, setChatBoxCount] = useState(2); // Initialize with 2 chatboxes
