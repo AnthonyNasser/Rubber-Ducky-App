@@ -105,26 +105,31 @@ function ChatScreen() {
                     zIndex: 9999,
                 }}
                 >
-                <div
+                <div className ="bg-secondary-200 border-2 border-tertiary-200 flex justify-center"
                 style={{
-                    width: '300px',
+                    width: '400px',
                     height: '200px',
-                    background: 'white',
+                    //background: 'bg-tertiary-200',
                     borderRadius: '5px',
                     padding: '20px',
-                    boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.2)',
+                    boxShadow: '0px 0px 5px rgba(0, 0, 0, 0)',
                 }}
                 >
-            <form onSubmit = {handleSubmit}>
-              <label htmlFor="subjectInput">What do you want to teach today?:</label>
-              <input
+            <form onSubmit = {handleSubmit} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+              <label htmlFor="subjectInput" className="px-3 py-2 text-white font-bold">What do you want to Teach today?:</label>
+              <input 
+                className ="bg-primary-100 rounded-bl-3xl rounded-tl-3xl rounded-tr-3xl rounded-br-3xl mx-auto"
                 type="text"
                 id="subjectInput"
                 name="subject"
                 value={modalState.subject}
                 onChange={(e) => setModalState({ ...modalState, subject: e.target.value })}
-              />
-              <button type="submit">Submit</button>
+                style={{ 
+                  width: "100%",
+                  height: "20%"
+              }}
+              /><br></br>
+              <button type="submit" className="text-white font-bold">create</button>
             </form>
           </div>
         </div>
