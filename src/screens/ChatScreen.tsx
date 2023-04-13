@@ -74,9 +74,9 @@ function ChatScreen() {
                         <FontAwesomeIcon icon={faAdd} className="mr-3" size="lg" />
                         <span className="text-lg uppercase">Create a Chat</span>
                     </button>
-                    <div className="flex flex-col overflow-y-scroll max-h-screen">
+                    <div className="flex flex-col overflow-y-scroll max-h-screen no-scrollbar">
                       {chatBoxes.map((chatBox, index) => (
-                        <div key={index}>
+                        <div  key={index}>
                           
                           {chatBox}
                           

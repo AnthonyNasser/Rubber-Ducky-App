@@ -1,7 +1,6 @@
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import ChatBubble from './ChatBubble'
 
 const ChatInterface = () => {
     return (
@@ -60,8 +59,7 @@ const ChatInterface = () => {
                 <div className="ml-2 bg-secondary-200 break-words max-w-full py-3 px-4 bg-gray-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white ">
                 Scrolled Message
                 </div>
-            </div>
-            <ChatBubble/>            
+            </div>          
             
         </div>
     )

@@ -50,6 +50,7 @@ module.exports = {
                 800: '#FFA700',
             }, // pale yellow palette
             white: '#FFFFFF', // white
+            
         },
     },
     plugins: [],

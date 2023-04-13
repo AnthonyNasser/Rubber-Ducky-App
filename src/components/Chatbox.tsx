@@ -13,7 +13,7 @@ const ChatBox = ({ chatTitle, index, handleDeleteClick }: Props) => {
     const [showDeleteButton, setShowDeleteButton] = useState(false);
     return (
         // TODO: add onClick function to have previous chat pop up
-    <button className="bg-secondary-800 text-white font-bold py-5 px-4 mb-1 shadow-lg ml-5"
+    <button className="bg-secondary-800 text-white font-bold py-5 px-4 mb-1 shadow-lg ml-5 min-w-[90%] max-h-[60px]"
         style={{width: "200px", height: 'auto', wordWrap: "break-word" }} // set a fixed width
         onClick={() => setShowDeleteButton(true)}
         onMouseLeave={() => setShowDeleteButton(false)}
