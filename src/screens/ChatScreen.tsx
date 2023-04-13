@@ -42,11 +42,22 @@ function ChatScreen() {
         
         setModalState({ ...modalState, showModal: false });
     };
-
+    
+    function enterPress(e :React.KeyboardEvent) {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            console.log("Enter")
+            var textArea = document.getElementById("dialouge") as HTMLTextAreaElement | null
+            if (textArea != null) {
+                textArea.value = ""
+                textArea.value = textArea.value.replace( /[\r\n]+/gm, "");
+            }
+        }
+    }
     return (
         <div className={`${BG_STYLE} flex flex-col min-h-screen`}>
             <Navbar />
-            <div className="flex flex-row flex-grow h-full">
+            <div className="flex flex-row max-h-full h-full">
                 <div className="flex flex-col h-full w-1/6" id="chatList">
                     <button 
                     className="bg-secondary-200 text-white font-bold py-5 px-4 rounded-2xl shadow-lg ml-5 mb-5 mt-10"
