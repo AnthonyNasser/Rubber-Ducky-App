@@ -4,6 +4,7 @@ import HomeScreen from './screens/HomeScreen'
 import ChatScreen from './screens/ChatScreen'
 import QuizScreen from './screens/QuizScreen'
 import LoginScreen from './screens/LoginScreen'
+import SignUpScreen from './screens/SignUpScreen'
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
                 <Route path="/chats" element={<ChatScreen />} />
                 <Route path="/quiz" element={<QuizScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
+                <Route path="/signup" element={<SignUpScreen />} />
             </Routes>
         </BrowserRouter>
     )
