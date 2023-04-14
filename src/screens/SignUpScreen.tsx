@@ -21,13 +21,19 @@ function quack() {
 function SignUpScreen() {
     const BIG_CONTAINER_STYLE: string = `flex flex-col items-center justify-start px-10 ${FADE_IN_SHORT}`
     const PARAGRAPHS_CONTAINER_STYLE: string =
-        'flex flex-col items-center justify-center w-auto h-5/6 shadow-xlg rounded-3xl bg-secondary-100 mt-10 shadow-md'
+        'flex flex-col items-center justify-center min-w-600 w-auto h-5/6 shadow-xlg rounded-3xl bg-secondary-100 mt-10 shadow-md'
 
     return (
         <div className={`${BG_STYLE}`}>
             <Navbar />
             <div className={BIG_CONTAINER_STYLE}>
-                <div className={PARAGRAPHS_CONTAINER_STYLE}>
+                <div
+                    className={PARAGRAPHS_CONTAINER_STYLE}
+                    style={{
+                        width: '50%',
+                        height: '20%',
+                    }}
+                >
                     <h1 className="text-3xl md:text-6xl my-8 lg:my-12 font-black text-white ">
                         SignUp!
                     </h1>

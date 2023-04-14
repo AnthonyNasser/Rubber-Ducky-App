@@ -89,7 +89,7 @@ function LoginScreen() {
                             to="/"
                         >
                             <FontAwesomeIcon icon={faBolt} size="2x" />
-                            <h1 className="ml-2">Login</h1>
+                            <h1 className="text-lg ml-2">Login</h1>
                         </Link>
                     </div>
                 </div>
