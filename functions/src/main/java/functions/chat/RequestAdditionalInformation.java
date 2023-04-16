@@ -13,5 +13,6 @@ public class RequestAdditionalInformation implements HttpFunction {
       throws IOException {
     BufferedWriter writer = response.getWriter();
     writer.write("Request Additional Information");
+    // Update chat
   }
 }

@@ -13,5 +13,6 @@ public class Respond implements HttpFunction {
       throws IOException {
     BufferedWriter writer = response.getWriter();
     writer.write("Respond");
+    // Update chat
   }
 }

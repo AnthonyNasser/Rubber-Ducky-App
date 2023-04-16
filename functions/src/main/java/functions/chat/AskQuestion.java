@@ -13,5 +13,6 @@ public class AskQuestion implements HttpFunction {
       throws IOException {
     BufferedWriter writer = response.getWriter();
     writer.write("Ask Question");
+    // Create new collection?
   }
 }
