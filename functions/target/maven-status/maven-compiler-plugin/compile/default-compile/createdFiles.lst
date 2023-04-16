@@ -1,0 +1,7 @@
+functions/user/GetChats.class
+functions/user/CreateUser.class
+functions/user/LoginUser.class
+functions/chat/RequestAdditionalInformation.class
+functions/chat/Respond.class
+functions/chat/AskQuestion.class
+functions/user/CreateChat.class
