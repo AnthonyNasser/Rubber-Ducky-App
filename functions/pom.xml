@@ -37,6 +37,18 @@
         <artifactId>gson</artifactId>
         <version>2.8.9</version>
     </dependency>
+    <!-- openai service -->
+    <dependency>
+      <groupId>com.theokanning.openai-gpt3-java</groupId>
+      <artifactId>service</artifactId>
+      <version>0.12.0</version>       
+    </dependency>
+    <!-- open ai api -->
+    <dependency>
+      <groupId>com.theokanning.openai-gpt3-java</groupId>
+      <artifactId>api</artifactId>
+      <version>0.12.0</version>       
+    </dependency>
   </dependencies>
 
   
