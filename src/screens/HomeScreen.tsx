@@ -16,7 +16,7 @@ function HomeScreen() {
     const PARAGRAPHS_CONTAINER_STYLE: string =
         'flex flex-col items-center justify-center w-auto h-5/6 shadow-xlg rounded-3xl bg-secondary-100 mt-10 shadow-md'
     return (
-        <div className={`${BG_STYLE}`}>
+        <div className={`${BG_STYLE} h-screen`}>
             <Navbar />
             <div className={BIG_CONTAINER_STYLE}>
                 <div className={PARAGRAPHS_CONTAINER_STYLE}>

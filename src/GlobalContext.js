@@ -2,7 +2,16 @@ import React, { useContext, useState, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { fbAuth, fbFS } from './services/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
+import {
+    addDoc,
+    arrayRemove,
+    arrayUnion,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    updateDoc,
+} from 'firebase/firestore'
 
 const GlobalContext = React.createContext()
 
@@ -12,6 +21,7 @@ export function useGlobalContext() {
 
 export function GlobalProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         // onAuthStateChanged(fbAuth, (userAuth) => {
@@ -36,6 +46,7 @@ export function GlobalProvider({ children }) {
             chats: [],
         }))
         const userRef = doc(fbFS, 'users', currentUser.uid)
+        setLoading(true)
         await getDoc(userRef).then((doc) => {
             if (doc.exists()) {
                 const chats = doc.data().chats
@@ -60,6 +71,39 @@ export function GlobalProvider({ children }) {
                 console.log('No such document!')
             }
         })
+        setLoading(false)
+    }
+
+    const createChat = async (subject) => {
+        const chatsCollection = collection(fbFS, 'chats')
+        setLoading(true)
+        await addDoc(chatsCollection, {
+            subject: subject,
+            messages: [],
+        }).then(async (docRef) => {
+            const chatRef = doc(fbFS, 'chats', docRef.id)
+            const userRef = doc(fbFS, 'users', currentUser.uid)
+            await updateDoc(userRef, {
+                chats: arrayUnion(chatRef),
+            })
+            currentUser.chats.push({
+                id: docRef.id,
+                subject: subject,
+                messages: [],
+            })
+        })
+        setLoading(false)
+        getAllChats()
+    }
+
+    const removeChat = async (chatId) => {
+        const chatRef = doc(fbFS, 'chats', chatId)
+        await deleteDoc(chatRef)
+        const userRef = doc(fbFS, 'users', currentUser.uid)
+        await updateDoc(userRef, {
+            chats: arrayRemove(chatRef),
+        })
+        getAllChats()
     }
 
     const value = useMemo(
@@ -67,6 +111,10 @@ export function GlobalProvider({ children }) {
             currentUser,
             setCurrentUser,
             getAllChats,
+            createChat,
+            removeChat,
+            loading,
+            setLoading,
         }),
         [currentUser, setCurrentUser]
     )

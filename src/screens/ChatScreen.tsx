@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar'
 import { BG_STYLE } from '../theme/tailwind-styles'
 import {
     faAdd,
+    faArrowLeft,
+    faArrowLeftRotate,
     faArrowUp,
     faMessage,
     faPlaneUp,
@@ -11,9 +13,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import ChatBox from '../components/Chatbox'
 import Message from '../components/Message'
-import AddChatButton from '../components/AddChatButton'
+import AddChatButton from '../components/AddChatForm'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { fbFS } from '../services/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { useGlobalContext } from '../GlobalContext'
@@ -23,26 +25,41 @@ function ChatScreen() {
     const globalContext = useGlobalContext()
     const [messages, setMessages] = useState<any>([])
     const [subject, setSubject] = useState<any>(null)
+    const navigate = useNavigate()
+
+    const navigateBack = () => {
+        navigate('/chats')
+    }
+
+    const getDataFromContext = () => {
+        setMessages(
+            globalContext.currentUser.chats.find((chat: any) => chat.id === id)
+                ?.messages
+        )
+        setSubject(
+            globalContext.currentUser.chats.find((chat: any) => chat.id === id)
+                ?.subject
+        )
+    }
 
     useEffect(() => {
-        const getDataFromContext = () => {
-            setMessages(
-                globalContext.currentUser.chats.find(
-                    (chat: any) => chat.id === id
-                )?.messages
-            )
-            setSubject(
-                globalContext.currentUser.chats.find(
-                    (chat: any) => chat.id === id
-                )?.subject
-            )
-        }
         getDataFromContext()
     }, [])
 
     return (
         <div className={`${BG_STYLE} flex flex-col h-screen`}>
             <Navbar />
+            <button
+                className="text-secondary-800 font-black flex flex-row w-1/6 items-center"
+                onClick={navigateBack}
+            >
+                <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    className="px-3"
+                    size="xl"
+                />
+                <h2 className="text-xl">Go Back</h2>
+            </button>
             <h1 className="text-2xl text-secondary-800 mb-3 font-bold mt-5 ml-5">
                 Talking about {subject}...
             </h1>
