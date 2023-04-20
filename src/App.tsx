@@ -6,6 +6,7 @@ import QuizScreen from './screens/QuizScreen'
 import OnboardingScreen from './screens/OnboardingScreen'
 import { GlobalProvider } from './GlobalContext'
 import RequireAuth from './components/RequireAuth'
+import AllChatsScreen from './screens/AllChatsScreen'
 
 const App = () => {
     return (
@@ -25,10 +26,11 @@ const App = () => {
                         path="/chats"
                         element={
                             <RequireAuth>
-                                <ChatScreen />
+                                <AllChatsScreen />
                             </RequireAuth>
                         }
                     />
+                    <Route path="/chats/:id" element={<ChatScreen />} />
                     <Route
                         path="/quiz"
                         element={
