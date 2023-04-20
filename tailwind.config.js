@@ -20,6 +20,7 @@ module.exports = {
                 800: '#FF2200',
             }, //saffron yellow palette
             secondary: {
+                50: '#ADD8E6',
                 100: '#277BC0',
                 200: '#1F6FAF',
                 300: '#17649E',

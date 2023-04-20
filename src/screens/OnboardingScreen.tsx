@@ -19,9 +19,9 @@ function OnboardingScreen() {
 
     return (
         <div className={`${BG_STYLE} h-screen w-screen`}>
-            <div className="py-20" />
+            <div className="py-10" />
             <div
-                className={` bg-secondary-200 px-10 mx-12 flex flex-col items-center justify-center rounded-3xl shadow-xl ${FADE_IN_SHORT}`}
+                className={`bg-secondary-200 px-10 mx-12 flex flex-col items-center justify-center rounded-3xl shadow-xl ${FADE_IN_SHORT}`}
             >
                 <div
                     className={`${BIG_CONTAINER_STYLE} py-10 my-5 w-full md:w-3/4 lg:w-1/2`}
@@ -72,6 +72,7 @@ const RegisterForm = (props: any) => {
         setLoading(true)
 
         if (password !== confirmPassword) {
+            setLoading(false)
             return setError('Passwords do not match')
         }
 
@@ -86,12 +87,15 @@ const RegisterForm = (props: any) => {
                         firstName,
                         lastName,
                         email,
+                        chats: [],
                         createdAt: new Date(),
                     }).then(() => {
                         globalContext?.setCurrentUser({
+                            uid: id,
                             firstName,
                             lastName,
                             email,
+                            chats: [],
                             createdAt: new Date(),
                         })
                         navigate(from, { replace: true })
@@ -167,7 +171,12 @@ const RegisterForm = (props: any) => {
             )}
 
             {loading ? (
-                <PacmanLoader color={'#ffffff'} loading={loading} size={30} />
+                <PacmanLoader
+                    color={'#ffffff'}
+                    loading={loading}
+                    size={30}
+                    className="my-5"
+                />
             ) : (
                 <button
                     type="submit"
@@ -211,7 +220,10 @@ const LoginForm = (props: any) => {
                     await getDoc(userRef)
                         .then((doc) => {
                             if (doc.exists()) {
-                                globalContext?.setCurrentUser(doc.data())
+                                globalContext?.setCurrentUser({
+                                    ...doc.data(),
+                                    uid: id,
+                                })
                                 navigate(from, { replace: true })
                             } else {
                                 console.error('No such document!')
@@ -258,7 +270,12 @@ const LoginForm = (props: any) => {
                 </p>
             )}
             {loading ? (
-                <PacmanLoader color="#FFFFFF" />
+                <PacmanLoader
+                    color={'#ffffff'}
+                    loading={loading}
+                    size={30}
+                    className="my-5"
+                />
             ) : (
                 <button
                     type="submit"
