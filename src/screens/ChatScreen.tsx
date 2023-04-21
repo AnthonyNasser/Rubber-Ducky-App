@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor, ReactElement, ReactFragment, useState, useRef } from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactFragment, useState, useRef, } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Navbar from '../components/Navbar'
 import { BG_STYLE } from '../theme/tailwind-styles'
@@ -14,6 +14,7 @@ type ModalState = {
 
 
 function ChatScreen() {
+    
     const [chatBoxCount, setChatBoxCount] = useState(2); // Initialize with 2 chatboxes
     const [chatBoxes, setChatBoxes] = useState<Array<JSX.Element>>([]);
     const [modalState, setModalState] = useState<ModalState>({
@@ -21,6 +22,11 @@ function ChatScreen() {
         subject: '',
       }); 
       
+    var voices = window.speechSynthesis.getVoices();
+    speechSynthesis.addEventListener("voiceschanged", ()=> {
+      voices = speechSynthesis.getVoices();
+    })
+
     const { showModal, subject } = modalState;
     const handleAddChatBox = (e: React.FormEvent) => {
         e.preventDefault(); 
@@ -51,7 +57,6 @@ function ChatScreen() {
     function enterPress(e :React.KeyboardEvent) {
         if (e.key === "Enter") {
             e.preventDefault()
-            console.log("Enter")
             var textArea = document.getElementById("dialouge") as HTMLTextAreaElement | null
             if (textArea != null) {
                 textArea.value = ""
@@ -59,6 +64,13 @@ function ChatScreen() {
             }
         }
     }
+
+    function playTextToSpeech(txtmessage : string) {
+      const message = new SpeechSynthesisUtterance(txtmessage);
+      message.voice = voices.filter(function(voice) { return voice.name == 'Google US English'; })[0];
+      window.speechSynthesis.speak(message);
+    }
+
     return (
         <div className={`${BG_STYLE} flex flex-col min-h-screen`}>
             <Navbar />
