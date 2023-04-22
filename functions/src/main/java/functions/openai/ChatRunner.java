@@ -29,6 +29,14 @@ public class ChatRunner implements HttpFunction {
         String requestBody = new String(request.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
         Map<String, Object> data = gson.fromJson(requestBody, Map.class);
 
+        String[] sentenceStarters = {
+            "Please try again. ",
+            "Let's try again. ",
+            "Let's try that again. ",
+            "Let's try that one more time. ",
+            "Give it another try. "
+        };
+
         if (data == null) {
             response.setStatusCode(400);
             response.getWriter().write("Invalid request data");
@@ -37,20 +45,41 @@ public class ChatRunner implements HttpFunction {
 
         try {
             // start threads here
-            ExecutorService executor = Executors.newFixedThreadPool(2);
-
-            CompletionSender send = new CompletionSender(data.get("subject").toString(), data.get("information").toString(), new String[0], 0); 
-            CompletionSender verifySend = new CompletionSender(data.get("subject").toString(), data.get("information").toString(), new String[0], 1);
-            executor.execute(send);
-            executor.execute(verifySend);
+            ExecutorService executor;
+        
+            CompletionSender initialSend = new CompletionSender(data.get("subject").toString(), data.get("information").toString(), new String[0], data.get("question").toString(), 0); 
+            CompletionSender send = new CompletionSender(data.get("subject").toString(), data.get("information").toString(), new String[0], data.get("question").toString(), 1); 
+            CompletionSender verifySend = new CompletionSender(data.get("subject").toString(), data.get("information").toString(), new String[0], data.get("question").toString(), 2);
+            
+            if (Integer.parseInt(data.get("promptType").toString()) == 0) {
+                executor = Executors.newFixedThreadPool(1);
+                executor.execute(initialSend);
+            } else {
+                executor = Executors.newFixedThreadPool(2);
+                executor.execute(send);
+                executor.execute(verifySend);
+            }
             executor.shutdown();
             while (!executor.isTerminated()) {
                 Thread.yield();
             }
             
             response.setStatusCode(201); // Created
-            response.getWriter().write(send.response);
-            response.getWriter().write(verifySend.response);
+
+            if (Integer.parseInt(data.get("promptType").toString()) == 0) {
+                response.getWriter().write(initialSend.response.trim());
+            } else {
+                if (verifySend.response.contains("++Yes++")) {
+                    response.getWriter().write("That's correct! ");
+                    response.getWriter().write("\n===");
+                    response.getWriter().write(send.response.trim());
+                } else {
+                    response.getWriter().write(verifySend.response.trim());
+                    response.getWriter().write("\n===");
+                    response.getWriter().write(sentenceStarters[(int) (Math.random() * sentenceStarters.length)] + data.get("question").toString());
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatusCode(500);
