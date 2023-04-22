@@ -201,67 +201,73 @@ export function GlobalProvider({ children }) {
                         })
                     })
                 } else {
+                    console.log('INCORRECTO BONDITO: ' + response)
                     await updateDoc(chatRef, {
                         messages: arrayUnion({
                             isUser: false,
                             message: response,
                         }),
-                    })
-                    currentUser.chats.forEach((chat) => {
-                        if (chat.id == chatId) {
-                            chat.messages.push({
-                                isUser: false,
-                                message: response,
-                            })
-                        }
-                    })
-                    const sentenceStarters = [
-                        'Please try again. ',
-                        "Let's try again. ",
-                        "Let's try that again. ",
-                        "Let's try that one more time. ",
-                        'Give it another try. ',
-                    ]
-                    await updateDoc(chatRef, {
-                        messages: arrayUnion({
-                            isUser: false,
-                            message: question,
-                        }),
-                    })
-
-                    const newQuestion = `${
-                        sentenceStarters[
-                            Math.floor(Math.random() * sentenceStarters.length)
+                    }).then(async () => {
+                        currentUser.chats.forEach((chat) => {
+                            if (chat.id == chatId) {
+                                chat.messages.push({
+                                    isUser: false,
+                                    message: response,
+                                })
+                            }
+                        })
+                        const sentenceStarters = [
+                            'Please try again. ',
+                            "Let's try again. ",
+                            "Let's try that again. ",
+                            "Let's try that one more time. ",
+                            'Give it another try. ',
                         ]
-                    } ${question}`
-
-                    let questionToSave = ''
-
-                    if (
-                        question.includes("Let's try again. ") ||
-                        question.includes("Let's try that again. ") ||
-                        question.includes("Let's try that one more time. ") ||
-                        question.includes('Give it another try. ')
-                    ) {
-                        questionToSave = question
-                    } else {
-                        questionToSave = newQuestion
-                    }
-
-                    currentUser.chats.forEach((chat) => {
-                        if (chat.id == chatId) {
-                            chat.messages.push({
+                        await updateDoc(chatRef, {
+                            messages: arrayUnion({
                                 isUser: false,
-                                message: questionToSave,
-                            })
-                        }
-                    })
+                                message: question,
+                            }),
+                        }).then(async () => {
+                            const newQuestion = `${
+                                sentenceStarters[
+                                    Math.floor(
+                                        Math.random() * sentenceStarters.length
+                                    )
+                                ]
+                            } ${question}`
 
-                    await updateDoc(chatRef, {
-                        messages: arrayUnion({
-                            isUser: false,
-                            message: questionToSave,
-                        }),
+                            let questionToSave = ''
+
+                            if (
+                                question.includes("Let's try again. ") ||
+                                question.includes("Let's try that again. ") ||
+                                question.includes(
+                                    "Let's try that one more time. "
+                                ) ||
+                                question.includes('Give it another try. ')
+                            ) {
+                                questionToSave = question
+                            } else {
+                                questionToSave = newQuestion
+                            }
+
+                            currentUser.chats.forEach((chat) => {
+                                if (chat.id == chatId) {
+                                    chat.messages.push({
+                                        isUser: false,
+                                        message: questionToSave,
+                                    })
+                                }
+                            })
+
+                            await updateDoc(chatRef, {
+                                messages: arrayUnion({
+                                    isUser: false,
+                                    message: questionToSave,
+                                }),
+                            })
+                        })
                     })
                 }
             }

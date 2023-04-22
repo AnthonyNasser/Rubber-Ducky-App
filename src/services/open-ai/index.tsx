@@ -42,7 +42,7 @@ const verifyQuestionCompletion = async (
     question: String,
     information: String
 ) => {
-    let prompt = `You are speaking with an student attempting to learn the following subject: ${subject}. 
+    let prompt = `You are speaking with an student attempting to learn the following subject: ${subject}.
     You just asked the following question: ${question}, and the student responded with the following information about the topic: ${information}.
     If the information provided is completely correct, respond with "++Yes++", and nothing else.
     If the information provided is incorrect, respond with a concise explanation as to why it is incorrect.
