@@ -4,9 +4,7 @@ import ChatBox from '../components/Chatbox'
 import AddChatForm from '../components/AddChatForm'
 import { useEffect, useState } from 'react'
 import { useGlobalContext } from '../GlobalContext'
-import { doc, getDoc } from 'firebase/firestore'
-import { fbFS } from '../services/firebase'
-import { RiseLoader, ScaleLoader } from 'react-spinners'
+import { ScaleLoader } from 'react-spinners'
 
 function AllChatsScreen() {
     const globalContext = useGlobalContext()

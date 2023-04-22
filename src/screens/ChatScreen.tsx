@@ -5,6 +5,7 @@ import {
     faArrowLeft,
     faArrowUp,
     faEdit,
+    faVolumeMute,
     faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons'
 import Message from '../components/Message'
@@ -29,6 +30,7 @@ function ChatScreen() {
     const [loading, setLoading] = useState(false)
     const [currentLoadingAnim, setCurrentLoadingAnim] = useState<any>(afroDucky)
     const [showEditSubject, setShowEditSubject] = useState(true)
+    const [isMuted, setIsMuted] = useState<boolean>(false)
     const navigate = useNavigate()
 
     const navigateBack = () => {
@@ -75,7 +77,6 @@ function ChatScreen() {
             }
         })
         setMessage('')
-        console.log(msg)
         await globalContext.addMessage(
             id,
             subject,
@@ -109,6 +110,25 @@ function ChatScreen() {
 
     useEffect(() => {
         scrollToBottom()
+        if (!isMuted) {
+            if (
+                messages.length > 0 &&
+                messages[messages.length - 1] !== undefined &&
+                !messages[messages.length - 1].isUser
+            ) {
+                // if the last two messages are from the bot, play the second last message as well
+                if (
+                    messages.length > 1 &&
+                    messages[messages.length - 2] !== undefined &&
+                    !messages[messages.length - 2].isUser
+                ) {
+                    playTextToSpeech(messages[messages.length - 2].message)
+                    playTextToSpeech(messages[messages.length - 1].message)
+                } else {
+                    playTextToSpeech(messages[messages.length - 1].message)
+                }
+            }
+        }
     }, [messages])
 
     useEffect(() => {
@@ -158,15 +178,25 @@ function ChatScreen() {
                 <h2 className="text-xl">Back to Chats</h2>
             </button>
             <button
-                className="bg-secondary-200 text-white font-bold py-2 px-2 rounded-2xl shadow-lg absolute top-12 right-5 mt-6 mr-6"
-                onClick={(e) => {
-                    console.log('hello')
-                    //Need to find a way to import the strings needed
-                    playTextToSpeech('Hello')
+                className="bg-secondary-200 text-white font-bold py-2 px-2 rounded-2xl shadow-lg absolute top-12 right-5 mr-6 mt-16"
+                onClick={() => {
+                    setIsMuted(!isMuted)
                 }}
             >
-                <span className="text-lg uppercase"> </span>
-                <FontAwesomeIcon icon={faVolumeUp} className="mr-3" size="lg" />
+                <span className="text-lg uppercase"></span>
+                {isMuted ? (
+                    <FontAwesomeIcon
+                        icon={faVolumeUp}
+                        className="mr-3"
+                        size="lg"
+                    />
+                ) : (
+                    <FontAwesomeIcon
+                        icon={faVolumeMute}
+                        className="mr-3"
+                        size="lg"
+                    />
+                )}
             </button>
             <div className="flex flex-row w-full items-center justify-center -mt-2 mb-3">
                 <h1 className="text-2xl text-secondary-800 font-bold">
