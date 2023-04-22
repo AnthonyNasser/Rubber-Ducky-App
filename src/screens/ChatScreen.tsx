@@ -5,6 +5,7 @@ import {
     faArrowLeft,
     faArrowUp,
     faEdit,
+    faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons'
 import Message from '../components/Message'
 import { createRef, useEffect, useRef, useState } from 'react'
@@ -129,6 +130,19 @@ function ChatScreen() {
         }
     }
 
+    var voices = window.speechSynthesis.getVoices()
+    speechSynthesis.addEventListener('voiceschanged', () => {
+        voices = speechSynthesis.getVoices()
+    })
+
+    function playTextToSpeech(txtmessage: string) {
+        const message = new SpeechSynthesisUtterance(txtmessage)
+        message.voice = voices.filter(function (voice) {
+            return voice.name == 'Google US English'
+        })[0]
+        window.speechSynthesis.speak(message)
+    }
+
     return (
         <div className={`${BG_STYLE} flex flex-col h-screen`}>
             <Navbar />
@@ -143,7 +157,17 @@ function ChatScreen() {
                 />
                 <h2 className="text-xl">Back to Chats</h2>
             </button>
-            {/* TODO: find a way to do this without negative margin */}
+            <button
+                className="bg-secondary-200 text-white font-bold py-2 px-2 rounded-2xl shadow-lg absolute top-12 right-5 mt-6 mr-6"
+                onClick={(e) => {
+                    console.log('hello')
+                    //Need to find a way to import the strings needed
+                    playTextToSpeech('Hello')
+                }}
+            >
+                <span className="text-lg uppercase"> </span>
+                <FontAwesomeIcon icon={faVolumeUp} className="mr-3" size="lg" />
+            </button>
             <div className="flex flex-row w-full items-center justify-center -mt-2 mb-3">
                 <h1 className="text-2xl text-secondary-800 font-bold">
                     Currently discussing {showEditSubject && subject}
@@ -186,25 +210,31 @@ function ChatScreen() {
                     className="bg-secondary-50 w-full rounded-2xl mx-5 mb-10 h-5/6 md:h-5/6 p-6 overflow-auto no-scrollbar"
                     id="interface"
                 >
-                    {loading ? (
-                        <div className="flex flex-col justify-center items-center align-middle">
-                            <Lottie
-                                animationData={currentLoadingAnim}
-                                loop={true}
-                                size={10}
-                            />
-                        </div>
-                    ) : (
-                        <div id="messages">
-                            {messages?.map((message: any, index: number) => (
-                                <div key={index}>
-                                    <Message
-                                        message={message.message}
-                                        isUser={message.isUser}
+                    {messages?.length > 0 && (
+                        <div>
+                            {loading ? (
+                                <div className="flex flex-col justify-center items-center align-middle">
+                                    <Lottie
+                                        animationData={currentLoadingAnim}
+                                        loop={true}
+                                        size={10}
                                     />
                                 </div>
-                            ))}
-                            <div ref={messagesEndRef} />
+                            ) : (
+                                <div id="messages">
+                                    {messages?.map(
+                                        (message: any, index: number) => (
+                                            <div key={index}>
+                                                <Message
+                                                    message={message.message}
+                                                    isUser={message.isUser}
+                                                />
+                                            </div>
+                                        )
+                                    )}
+                                    <div ref={messagesEndRef} />
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
