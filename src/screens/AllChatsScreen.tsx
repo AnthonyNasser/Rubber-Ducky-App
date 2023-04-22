@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { useGlobalContext } from '../GlobalContext'
 import { doc, getDoc } from 'firebase/firestore'
 import { fbFS } from '../services/firebase'
-import { RiseLoader } from 'react-spinners'
+import { RiseLoader, ScaleLoader } from 'react-spinners'
 
 function AllChatsScreen() {
     const globalContext = useGlobalContext()
@@ -23,7 +23,7 @@ function AllChatsScreen() {
                 <AddChatForm showFormState={[showForm, setShowForm]} />
                 {globalContext.loading ? (
                     <div className="flex justify-center items-center self-center">
-                        <RiseLoader color="#FF2200" size={25} />
+                        <ScaleLoader color="#00416B" />
                     </div>
                 ) : (
                     <>
@@ -32,18 +32,14 @@ function AllChatsScreen() {
                                 {globalContext.currentUser.chats.map(
                                     (chat: any) => (
                                         <>
-                                            {chat &&
-                                                chat.id &&
-                                                chat.subject && (
-                                                    <div key={chat.id}>
-                                                        <ChatBox
-                                                            id={chat.id}
-                                                            subject={
-                                                                chat.subject
-                                                            }
-                                                        />
-                                                    </div>
-                                                )}
+                                            {chat && chat.id && chat.subject && (
+                                                <div key={chat.id}>
+                                                    <ChatBox
+                                                        id={chat.id}
+                                                        subject={chat.subject}
+                                                    />
+                                                </div>
+                                            )}
                                         </>
                                     )
                                 )}

@@ -16,7 +16,7 @@ function HomeScreen() {
     const PARAGRAPHS_CONTAINER_STYLE: string =
         'flex flex-col items-center justify-center w-auto h-5/6 shadow-xlg rounded-3xl bg-secondary-100 mt-10 shadow-md'
     return (
-        <div className={`${BG_STYLE} h-screen`}>
+        <div className={`${BG_STYLE} h-full pb-10`}>
             <Navbar />
             <div className={BIG_CONTAINER_STYLE}>
                 <div className={PARAGRAPHS_CONTAINER_STYLE}>
@@ -66,11 +66,12 @@ function HomeScreen() {
                             alt="Rubber Ducky"
                         />
                         <Link
-                            className="hover:transform hover:-translate-y-1 hover:-skew-y-1 hover:bg-primary-500 hover:opacity-100 transition duration-300 ease-in-out rounded-2xl px-3 py-5 mt-6 mb-2 lg:my-0 flex items-center justify-center text-xs uppercase font-bold w-full lg:w-1/3 text-white bg-gradient-to-r bg-primary-300 shadow-lg"
-                            to="/quiz"
+                        // diabled button
+                            className="opacity-50 cursor-not-allowed transition rounded-2xl px-3 py-5 mt-6 mb-2 lg:my-0 flex items-center justify-center text-xs uppercase font-bold w-full lg:w-1/3 text-white bg-gradient-to-r bg-primary-300 shadow-lg"
+                            to="#"
                         >
                             <FontAwesomeIcon icon={faBolt} size="2x" />
-                            <h1 className="text-lg ml-2">Quiz With Ducky</h1>
+                            <h1 className="text-lg ml-2 disabled">Quiz With Ducky (TBD)</h1>
                         </Link>
                     </div>
                 </div>

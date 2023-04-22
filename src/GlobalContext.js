@@ -106,6 +106,19 @@ export function GlobalProvider({ children }) {
         getAllChats()
     }
 
+    const addMessage = async (chatId, message) => {
+        const chatRef = doc(fbFS, 'chats', chatId)
+        await updateDoc(chatRef, {
+            messages: arrayUnion(message),
+        })
+        currentUser.chats.forEach((chat) => {
+            if (chat.id == chatId) {
+                chat.messages.push(message)
+            }
+        }
+        )
+    }
+
     const value = useMemo(
         () => ({
             currentUser,
@@ -113,6 +126,7 @@ export function GlobalProvider({ children }) {
             getAllChats,
             createChat,
             removeChat,
+            addMessage,
             loading,
             setLoading,
         }),

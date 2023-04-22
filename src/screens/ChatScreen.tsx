@@ -2,28 +2,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Navbar from '../components/Navbar'
 import { BG_STYLE } from '../theme/tailwind-styles'
 import {
-    faAdd,
     faArrowLeft,
-    faArrowLeftRotate,
     faArrowUp,
-    faMessage,
-    faPlaneUp,
-    faUpLong,
-    faUser,
 } from '@fortawesome/free-solid-svg-icons'
-import ChatBox from '../components/Chatbox'
 import Message from '../components/Message'
-import AddChatButton from '../components/AddChatForm'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { fbFS } from '../services/firebase'
-import { doc, getDoc } from 'firebase/firestore'
 import { useGlobalContext } from '../GlobalContext'
 
 function ChatScreen() {
     const { id } = useParams()
     const globalContext = useGlobalContext()
     const [messages, setMessages] = useState<any>([])
+    const [message, setMessage] = useState<String>('')
     const [subject, setSubject] = useState<any>(null)
     const navigate = useNavigate()
 
@@ -63,7 +54,7 @@ function ChatScreen() {
             <h1 className="text-2xl text-secondary-800 mb-3 font-bold mt-5 ml-5">
                 Talking about {subject}...
             </h1>
-            <div className="flex flex-row justify-center md:items-start w-full">
+            <div className="flex flex-row justify-center md:items-start w-full h-1/2">
                 <div
                     className="bg-secondary-50 w-full rounded-2xl mx-5 mb-10 h-full max-h-[600px] p-6 overflow-auto no-scrollbar"
                     id="interface"
@@ -78,14 +69,16 @@ function ChatScreen() {
                     ))}
                 </div>
             </div>
-            <div className="flex flex-row justify-center w-full">
-                <div className="flex bg-[#93bddf] max-h-[125px] w-3/4 mt-10 rounded-2xl mb-12 h-64 shadow-lg border-2 border-[#5295cc]">
+            <div className="flex flex-row justify-center w-full fixed bottom-0">
+                <div className="flex bg-quaternary-200 max-h-[125px] w-3/4 mt-10 rounded-2xl mb-12 h-64 shadow-lg">
                     <textarea
                         className="bg-[transparent] break-words appearance-none border-red-500 rounded w-full h-full text-gray-700 mb-3 leading-tight px-5 py-5 focus:outline-0"
                         id="dialouge"
+                        placeholder="Do your best to answer the question..."
+                        onChange={(e) => setMessage(e.target.value)}
                     ></textarea>
                 </div>
-                <button className="text-secondary-800 font-black transition duration-500 ease-in-out transform">
+                <button className="text-white p-2 font-black transition duration-500 ease-in-out transform bg-primary-200 h-1/2 self-center hover:-translate-y-1 hover:scale-105 rounded-full w-1/8 items-center">
                     <FontAwesomeIcon
                         icon={faArrowUp}
                         className="px-3"
