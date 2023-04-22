@@ -12,11 +12,12 @@ import {
     getDoc,
     updateDoc,
 } from 'firebase/firestore'
-import {
-    askInitialQuestionCompletion,
-    askQuestionCompletion,
-    verifyQuestionCompletion,
-} from './services/open-ai'
+import makeRequest from './services/open-ai'
+// import {
+//     askInitialQuestionCompletion,
+//     askQuestionCompletion,
+//     verifyQuestionCompletion,
+// } from './services/open-ai'
 
 const GlobalContext = React.createContext()
 
@@ -98,24 +99,24 @@ export function GlobalProvider({ children }) {
             })
 
             // add first question
-            await askInitialQuestionCompletion(subject).then(
-                async (response) => {
-                    await updateDoc(chatRef, {
-                        messages: arrayUnion({
-                            isUser: false,
-                            message: response,
-                        }),
-                    })
-                    currentUser.chats.forEach((chat) => {
-                        if (chat.id == docRef.id) {
-                            chat.messages.push({
-                                isUser: false,
-                                message: response,
-                            })
-                        }
-                    })
-                }
-            )
+            // await askInitialQuestionCompletion(subject).then(
+            //     async (response) => {
+            //         await updateDoc(chatRef, {
+            //             messages: arrayUnion({
+            //                 isUser: false,
+            //                 message: response,
+            //             }),
+            //         })
+            //         currentUser.chats.forEach((chat) => {
+            //             if (chat.id == docRef.id) {
+            //                 chat.messages.push({
+            //                     isUser: false,
+            //                     message: response,
+            //                 })
+            //             }
+            //         })
+            //     }
+            // )
         })
         setLoading(false)
         getAllChats()
@@ -144,13 +145,7 @@ export function GlobalProvider({ children }) {
         getAllChats()
     }
 
-    const addMessage = async (
-        chatId,
-        subject,
-        question,
-        message,
-        previousQuestions
-    ) => {
+    const addMessageToChatAndClient = async (chatId, message) => {
         const chatRef = doc(fbFS, 'chats', chatId)
         await updateDoc(chatRef, {
             messages: arrayUnion({
@@ -163,115 +158,127 @@ export function GlobalProvider({ children }) {
                 chat.messages.push(message)
             }
         })
-        await verifyQuestionCompletion(subject, question, message.message).then(
-            async (response) => {
-                if (response.includes('++Yes++')) {
-                    await updateDoc(chatRef, {
-                        messages: arrayUnion({
-                            isUser: false,
-                            message: "That's correct!",
-                        }),
-                    })
-                    currentUser.chats.forEach((chat) => {
-                        if (chat.id == chatId) {
-                            chat.messages.push({
-                                isUser: false,
-                                message: "That's correct!",
-                            })
-                        }
-                    })
-                    await askQuestionCompletion(
-                        subject,
-                        message.message,
-                        previousQuestions
-                    ).then(async (response) => {
-                        await updateDoc(chatRef, {
-                            messages: arrayUnion({
-                                isUser: false,
-                                message: response,
-                            }),
-                        })
-                        currentUser.chats.forEach((chat) => {
-                            if (chat.id == chatId) {
-                                chat.messages.push({
-                                    isUser: false,
-                                    message: response,
-                                })
-                            }
-                        })
-                    })
-                } else {
-                    console.log('INCORRECTO BONDITO: ' + response)
-                    await updateDoc(chatRef, {
-                        messages: arrayUnion({
-                            isUser: false,
-                            message: response,
-                        }),
-                    }).then(async () => {
-                        currentUser.chats.forEach((chat) => {
-                            if (chat.id == chatId) {
-                                chat.messages.push({
-                                    isUser: false,
-                                    message: response,
-                                })
-                            }
-                        })
-                        const sentenceStarters = [
-                            'Please try again. ',
-                            "Let's try again. ",
-                            "Let's try that again. ",
-                            "Let's try that one more time. ",
-                            'Give it another try. ',
-                        ]
-                        await updateDoc(chatRef, {
-                            messages: arrayUnion({
-                                isUser: false,
-                                message: question,
-                            }),
-                        }).then(async () => {
-                            const newQuestion = `${
-                                sentenceStarters[
-                                    Math.floor(
-                                        Math.random() * sentenceStarters.length
-                                    )
-                                ]
-                            } ${question}`
+    }
 
-                            let questionToSave = ''
+    const addMessage = async (
+        chatId,
+        subject,
+        question,
+        message,
+        previousQuestions
+    ) => {
+        const chatRef = doc(fbFS, 'chats', chatId)
+        await addMessageToChatAndClient(chatId, message)
+        makeRequest()
 
-                            if (
-                                question.includes("Let's try again. ") ||
-                                question.includes("Let's try that again. ") ||
-                                question.includes(
-                                    "Let's try that one more time. "
-                                ) ||
-                                question.includes('Give it another try. ')
-                            ) {
-                                questionToSave = question
-                            } else {
-                                questionToSave = newQuestion
-                            }
+        // await verifyQuestionCompletion(subject, question, message.message).then(
+        //     async (response) => {
+        //         if (response.includes('++Yes++')) {
+        //             await updateDoc(chatRef, {
+        //                 messages: arrayUnion({
+        //                     isUser: false,
+        //                     message: "That's correct!",
+        //                 }),
+        //             })
+        //             currentUser.chats.forEach((chat) => {
+        //                 if (chat.id == chatId) {
+        //                     chat.messages.push({
+        //                         isUser: false,
+        //                         message: "That's correct!",
+        //                     })
+        //                 }
+        //             })
+        //             await askQuestionCompletion(
+        //                 subject,
+        //                 message.message,
+        //                 previousQuestions
+        //             ).then(async (response) => {
+        //                 await updateDoc(chatRef, {
+        //                     messages: arrayUnion({
+        //                         isUser: false,
+        //                         message: response,
+        //                     }),
+        //                 })
+        //                 currentUser.chats.forEach((chat) => {
+        //                     if (chat.id == chatId) {
+        //                         chat.messages.push({
+        //                             isUser: false,
+        //                             message: response,
+        //                         })
+        //                     }
+        //                 })
+        //             })
+        //         } else {
+        //             await updateDoc(chatRef, {
+        //                 messages: arrayUnion({
+        //                     isUser: false,
+        //                     message: response,
+        //                 }),
+        //             }).then(async () => {
+        //                 currentUser.chats.forEach((chat) => {
+        //                     if (chat.id == chatId) {
+        //                         chat.messages.push({
+        //                             isUser: false,
+        //                             message: response,
+        //                         })
+        //                     }
+        //                 })
+        //                 const sentenceStarters = [
+        //                     'Please try again. ',
+        //                     "Let's try again. ",
+        //                     "Let's try that again. ",
+        //                     "Let's try that one more time. ",
+        //                     'Give it another try. ',
+        //                 ]
+        //                 await updateDoc(chatRef, {
+        //                     messages: arrayUnion({
+        //                         isUser: false,
+        //                         message: question,
+        //                     }),
+        //                 }).then(async () => {
+        //                     const newQuestion = `${
+        //                         sentenceStarters[
+        //                             Math.floor(
+        //                                 Math.random() * sentenceStarters.length
+        //                             )
+        //                         ]
+        //                     } ${question}`
 
-                            currentUser.chats.forEach((chat) => {
-                                if (chat.id == chatId) {
-                                    chat.messages.push({
-                                        isUser: false,
-                                        message: questionToSave,
-                                    })
-                                }
-                            })
+        //                     let questionToSave = ''
 
-                            await updateDoc(chatRef, {
-                                messages: arrayUnion({
-                                    isUser: false,
-                                    message: questionToSave,
-                                }),
-                            })
-                        })
-                    })
-                }
-            }
-        )
+        //                     if (
+        //                         question.includes("Let's try again. ") ||
+        //                         question.includes("Let's try that again. ") ||
+        //                         question.includes(
+        //                             "Let's try that one more time. "
+        //                         ) ||
+        //                         question.includes('Give it another try. ')
+        //                     ) {
+        //                         questionToSave = question
+        //                     } else {
+        //                         questionToSave = newQuestion
+        //                     }
+
+        //                     currentUser.chats.forEach((chat) => {
+        //                         if (chat.id == chatId) {
+        //                             chat.messages.push({
+        //                                 isUser: false,
+        //                                 message: questionToSave,
+        //                             })
+        //                         }
+        //                     })
+
+        //                     await updateDoc(chatRef, {
+        //                         messages: arrayUnion({
+        //                             isUser: false,
+        //                             message: questionToSave,
+        //                         }),
+        //                     })
+        //                 })
+        //             })
+        //         }
+        //     }
+        // )
     }
 
     const value = useMemo(
