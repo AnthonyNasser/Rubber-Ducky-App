@@ -31,16 +31,20 @@ function AllChatsScreen() {
                             <>
                                 {globalContext.currentUser.chats.map(
                                     (chat: any) => (
-                                        <>
-                                            {chat && chat.id && chat.subject && (
-                                                <div key={chat.id}>
-                                                    <ChatBox
-                                                        id={chat.id}
-                                                        subject={chat.subject}
-                                                    />
-                                                </div>
-                                            )}
-                                        </>
+                                        <div key={chat.id}>
+                                            {chat &&
+                                                chat.id &&
+                                                chat.subject && (
+                                                    <div key={chat.id}>
+                                                        <ChatBox
+                                                            id={chat.id}
+                                                            subject={
+                                                                chat.subject
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
+                                        </div>
                                     )
                                 )}
                             </>

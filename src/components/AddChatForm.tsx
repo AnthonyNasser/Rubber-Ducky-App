@@ -17,14 +17,10 @@ export default function AddChatButton(props: AddChatFormProps) {
     const globalContext = useGlobalContext()
     const [showForm, setShowForm] = props.showFormState
     const [subject, setSubject] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
 
     const handleCreateChat = async () => {
         setShowForm(false)
-        setLoading(true)
         await globalContext.createChat(subject).then(() => {
-            setLoading(false)
             setSubject('')
         })
     }
@@ -34,7 +30,7 @@ export default function AddChatButton(props: AddChatFormProps) {
             <button
                 onClick={() => setShowForm(!showForm)}
                 className={`${
-                    showForm ? 'bg-tertiary-300' : 'bg-secondary-800'
+                    showForm ? 'bg-[#5a5a5a]' : 'bg-secondary-800'
                 } text-white font-black py-5 mb-1 w-full shadow-lg rounded-lg hover:bg-primary-200 transition duration-500 ease-in-out transform`}
             >
                 <div className="flex flex-row align-middle justify-center items-center">
@@ -56,6 +52,11 @@ export default function AddChatButton(props: AddChatFormProps) {
                             placeholder="Enter Subject of Dicussion..."
                             className="bg-secondary-50 w-full mt-5 text-secondary-800 font-black py-5 pl-5 mb-1 rounded-lg"
                             onChange={(e) => setSubject(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleCreateChat()
+                                }
+                            }}
                         />
                         <div className="flex flex-row self-start items-center">
                             <FontAwesomeIcon
