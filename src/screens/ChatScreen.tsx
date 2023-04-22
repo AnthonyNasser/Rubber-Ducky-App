@@ -54,6 +54,7 @@ function ChatScreen() {
             globalContext.currentUser.chats.find((chat: any) => chat.id === id)
                 ?.subject
         )
+        setNewSubject(subject)
     }
 
     const sendMessage = async () => {
@@ -118,14 +119,14 @@ function ChatScreen() {
         if (subject === null || subject === '') {
             setShowEditSubject(true)
             return
-        }
-        if (subject === newSubject) {
+        } else if (subject === newSubject) {
             setShowEditSubject(true)
             return
+        } else {
+            await globalContext.changeSubject(id, newSubject)
+            setSubject(newSubject)
+            setShowEditSubject(true)
         }
-        await globalContext.changeSubject(id, newSubject)
-        setSubject(newSubject)
-        setShowEditSubject(true)
     }
 
     return (
@@ -142,8 +143,9 @@ function ChatScreen() {
                 />
                 <h2 className="text-xl">Back to Chats</h2>
             </button>
-            <div className="flex flex-row w-full items-center justify-center mt-5 mb-3">
-                <h1 className="text-2xl text-secondary-800 font-bold ml-5">
+            {/* TODO: find a way to do this without negative margin */}
+            <div className="flex flex-row w-full items-center justify-center -mt-2 mb-3">
+                <h1 className="text-2xl text-secondary-800 font-bold">
                     Currently discussing {showEditSubject && subject}
                 </h1>
                 {showEditSubject ? (
@@ -164,6 +166,11 @@ function ChatScreen() {
                             className="text-primary-800 font-black self-center py-3 px-3 rounded-2xl"
                             value={newSubject}
                             onChange={(e) => setNewSubject(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleChangeSubject()
+                                }
+                            }}
                         />
                         <button
                             className="text-primary-800 font-black self-center ml-3"
@@ -176,7 +183,7 @@ function ChatScreen() {
             </div>
             <div className="flex flex-row justify-center md:items-start w-full h-3/4">
                 <div
-                    className="bg-secondary-50 w-full rounded-2xl mx-5 mb-10 h-full max-h-[600px] p-6 overflow-auto no-scrollbar"
+                    className="bg-secondary-50 w-full rounded-2xl mx-5 mb-10 h-5/6 md:h-5/6 p-6 overflow-auto no-scrollbar"
                     id="interface"
                 >
                     {loading ? (
@@ -203,7 +210,7 @@ function ChatScreen() {
                 </div>
             </div>
             <div className="flex flex-row justify-center w-full fixed bottom-0">
-                <div className="flex bg-white max-h-[125px] w-11/12 md:w-3/4 mt-10 rounded-2xl mb-12 h-64 shadow-lg">
+                <div className="flex bg-white max-h-[125px] w-11/12 md:w-3/4 mt-10 rounded-2xl mb-12 shadow-lg">
                     <textarea
                         className="bg-[transparent] break-words appearance-none border-red-500 rounded w-full h-full text-gray-700 mb-3 leading-tight px-5 py-5 focus:outline-0"
                         id="dialouge"
