@@ -28,7 +28,7 @@ const askInitialQuestionCompletion = async (subject: String) => {
     return textData;
 }
 
-const askQuestionCompletion = async (
+const askAndVerifyQuestionCompletion = async (
     subject: String,
     information: String,
     previousQuestions: [String]
@@ -46,26 +46,7 @@ const askQuestionCompletion = async (
     return textData;
 }
 
-const verifyQuestionCompletion = async (
-    subject: String,
-    question: String,
-    information: String
-) => {
-    const response = await fetch('https://us-central1-project-test-382403.cloudfunctions.net/ChatRunner', {
-        method: "POST",
-        body: JSON.stringify({
-            subject: subject,
-            information: information,
-            question: question,
-            promptType: '2',
-        })
-    })
-    let textData = await response.text();
-    return textData;
-}
-
 export {
     askInitialQuestionCompletion,
-    askQuestionCompletion,
-    verifyQuestionCompletion,
+    askAndVerifyQuestionCompletion,
 }
