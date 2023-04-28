@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example.cloud.functions</groupId>
+  <artifactId>functions-rubber-ducky</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <properties>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+  </properties>
+
+  <dependencies>
+    <!-- Required for Function primitives -->
+    <dependency>
+      <groupId>com.google.cloud.functions</groupId>
+      <artifactId>functions-framework-api</artifactId>
+      <version>1.0.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- required for firestore -->
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-firestore</artifactId>
+      <version>3.9.4</version>
+    </dependency>
+    <!-- firebase admin SFK -->
+    <dependency>
+      <groupId>com.google.firebase</groupId>
+      <artifactId>firebase-admin</artifactId>
+      <version>8.0.1</version>
+    </dependency>
+    <!-- gson -->
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.8.9</version>
+    </dependency>
+    <!-- openai service -->
+    <dependency>
+      <groupId>com.theokanning.openai-gpt3-java</groupId>
+      <artifactId>service</artifactId>
+      <version>0.12.0</version>       
+    </dependency>
+    <!-- open ai api -->
+    <dependency>
+      <groupId>com.theokanning.openai-gpt3-java</groupId>
+      <artifactId>api</artifactId>
+      <version>0.12.0</version>       
+    </dependency>
+  </dependencies>
+
+  
+
+  <build>
+    <plugins>
+      <plugin>
+        <!--
+          Google Cloud Functions Framework Maven plugin
+
+          This plugin allows you to run Cloud Functions Java code
+          locally. Use the following terminal command to run a
+          given function locally:
+
+          mvn function:run -Drun.functionTarget=your.package.yourFunction
+        -->
+        <groupId>com.google.cloud.functions</groupId>
+        <artifactId>function-maven-plugin</artifactId>
+        <version>0.10.1</version>
+        <configuration>
+          <!-- Chat targets -->
+          <!-- <functionTarget>functions.AskQuestion</functionTarget>
+          <functionTarget>functions.chat.RequestAdditionalInformation</functionTarget> -->
+          <!-- <functionTarget>functions.chat.Respond</functionTarget> -->
+
+          <!-- <functionTarget>functions.LogInUser</functionTarget>
+          <functionTarget>functions.CreateUser</functionTarget>
+          <functionTarget>functions.CreateChat</functionTarget>
+          <functionTarget>functions.GetChats</functionTarget> -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,12 @@
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/user/CreateUser.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/user/CreateChat.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/firestore/ReadFromFirestore.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/chat/AskQuestion.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/firestore/MyFirebaseApp.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/firestore/PostToFirestore.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/user/GetChats.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/chat/Respond.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/chat/RequestAdditionalInformation.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/user/LoginUser.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/openai/ChatRunner.java
+/Users/nickraskop/Desktop/Rubber-Ducky-App/functions/src/main/java/functions/openai/CompletionSender.java
